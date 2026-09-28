@@ -1,0 +1,128 @@
+table dim_restaurant
+	lineageTag: 4b61b9d5-9ee8-45a1-a594-8a427255ee23
+	sourceLineageTag: [gold].[dim_restaurant]
+
+	column restaurant_location_id
+		dataType: string
+		lineageTag: 5ae9a6a2-3f6f-4bbb-98cc-cc11a685764e
+		sourceLineageTag: restaurant_location_id
+		summarizeBy: none
+		sourceColumn: restaurant_location_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_order_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 14af1951-e268-40b4-a475-47c393112d17
+		sourceLineageTag: first_order_date
+		summarizeBy: none
+		sourceColumn: first_order_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_order_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ab7f92d4-a339-4a01-a6f5-8d7284ca55b2
+		sourceLineageTag: last_order_date
+		summarizeBy: none
+		sourceColumn: last_order_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column sk_restaurant
+		dataType: string
+		isHidden
+		lineageTag: a20d909e-d094-48cb-aaac-2fa33dce3dcd
+		sourceLineageTag: sk_restaurant
+		summarizeBy: none
+		sourceColumn: sk_restaurant
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_number
+		dataType: string
+		lineageTag: 5065c0d3-f2c4-48a0-85bc-54a79625fdde
+		sourceLineageTag: customer_number
+		summarizeBy: none
+		sourceColumn: customer_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_rank
+		dataType: string
+		lineageTag: 876d07fe-5d3b-4946-bc1c-44dc0d675baf
+		sourceLineageTag: customer_rank
+		summarizeBy: none
+		sourceColumn: customer_rank
+
+		annotation SummarizationSetBy = Automatic
+
+	column restaurant_area_name
+		dataType: string
+		lineageTag: f1ea0329-8fd2-4976-90ec-da8ba37d7439
+		sourceLineageTag: restaurant_area_name
+		summarizeBy: none
+		sourceColumn: restaurant_area_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column restaurant_district_name
+		dataType: string
+		lineageTag: 2e8a16f4-3a1a-44e6-a17b-7c0e144daaf3
+		sourceLineageTag: restaurant_district_name
+		summarizeBy: none
+		sourceColumn: restaurant_district_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column restaurant_segment
+		dataType: string
+		lineageTag: aabcfa2a-8868-48e8-afab-f663e4257178
+		sourceLineageTag: restaurant_segment
+		summarizeBy: none
+		sourceColumn: restaurant_segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_status
+		dataType: string
+		lineageTag: 8db7882d-fcbc-4844-9be9-b6586dbe61b8
+		sourceLineageTag: client_status
+		summarizeBy: none
+		sourceColumn: client_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column restaurant_district_latitude
+		dataType: double
+		lineageTag: f84db2c2-e989-4b41-8ad6-3ec0e91bd34c
+		sourceLineageTag: restaurant_district_latitude
+		summarizeBy: none
+		sourceColumn: restaurant_district_latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column restaurant_district_longitude
+		dataType: double
+		lineageTag: f73830fd-67d7-46ff-8a66-cbc1134ff1e4
+		sourceLineageTag: restaurant_district_longitude
+		summarizeBy: none
+		sourceColumn: restaurant_district_longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition dim_restaurant = entity
+		mode: directLake
+		source
+			entityName: dim_restaurant
+			schemaName: gold
+			expressionSource: 'DirectLake - lh_chowhoundltd_orders'
+

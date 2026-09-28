@@ -1,0 +1,22 @@
+{
+  "formatVersion": "202502",
+  "computeEngineSettings": {
+    "allowModernEvaluationEngine": true
+  },
+  "name": "dfg2_bronze_key_standardization",
+  "queryGroups": [],
+  "documentLocale": "en-US",
+  "queriesMetadata": {
+    "bronze order_data_typed": {
+      "queryId": "6d7a7636-6ebe-48eb-9e12-e7d0634b1b26",
+      "queryName": "bronze order_data_typed"
+    }
+  },
+  "connections": [
+    {
+      "path": "Lakehouse",
+      "kind": "Lakehouse",
+      "connectionId": "{\"ClusterId\":\"eeaf83c5-3845-4c59-91fe-2bf7d47f2396\",\"DatasourceId\":\"ac067653-963f-43b7-8a13-aba3f9c21533\"}"
+    }
+  ]
+}

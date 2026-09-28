@@ -1,0 +1,32 @@
+table dim_movement_type
+	lineageTag: 62fda1ed-5e94-4d34-beec-1f518dbd0fe0
+	sourceLineageTag: [gold].[dim_movement_type]
+
+	column sk_movement_type
+		dataType: string
+		isHidden
+		lineageTag: eac9305d-c337-4605-9e87-903a38bd3c66
+		sourceLineageTag: sk_movement_type
+		summarizeBy: none
+		sourceColumn: sk_movement_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column movement_description
+		dataType: string
+		lineageTag: f6bf338e-d0a5-4a8b-982d-e7a3469b6460
+		sourceLineageTag: movement_description
+		summarizeBy: none
+		sourceColumn: movement_description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_movement_type = entity
+		mode: directLake
+		source
+			entityName: dim_movement_type
+			schemaName: gold
+			expressionSource: 'DirectLake - lh_chowhoundltd_orders'
+

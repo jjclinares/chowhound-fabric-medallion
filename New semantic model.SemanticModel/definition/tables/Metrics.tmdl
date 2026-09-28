@@ -1,0 +1,964 @@
+table Metrics
+	lineageTag: 9ef50b7a-8865-4fa6-87f9-fb8c7f9aecfd
+
+	/// Total Delivery Amount evaluated by delivery date instead of order date.
+	measure 'Delivery Amount by Delivery Date' = CALCULATE([Total Delivery Amount], USERELATIONSHIP(fact_order_lines[sk_date_delivery], dim_date[sk_date]))
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 0be79535-df4c-4abf-b3bc-6b1d6a2b6a55
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = DisplayFolder
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	/// Percentage of order lines where delivered quantity equals ordered quantity.
+	measure 'Fulfillment Rate' = ```
+			
+			    DIVIDE([Fulfilled Lines], [Order Lines])
+			```
+		formatString: 0%;-0%;0%
+		lineageTag: 13b11404-7a32-4198-8f26-3a6dc631bb76
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = DisplayFolder
+
+		changedProperty = FormatString
+
+	/// Sum of the difference between ordered and delivered amount.
+	measure 'Total Amount Lost' = SUM(fact_order_lines[amount_lost])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 139552df-d90f-4b95-9882-7e61894b3505
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = DisplayFolder
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	/// Sum of delivered amount at the order-line level.
+	measure 'Total Delivery Amount' = SUM(fact_order_lines[delivery_line_amount])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 4e1ac46c-23b2-4a73-8a0c-af98536ac239
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = DisplayFolder
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	/// Sum of ordered amount at the order-line level.
+	measure 'Total Order Amount' = SUM(fact_order_lines[order_line_amount])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: f74322e6-c38c-486f-ad1b-7fc7d1f69aee
+
+		changedProperty = Name
+
+		changedProperty = Description
+
+		changedProperty = DisplayFolder
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Data Start Date' = ```
+			
+			    MINX(ALL(fact_order_lines), fact_order_lines[entry_date])
+			```
+		formatString: General Date
+		lineageTag: eb3e4984-3eca-4200-97ca-9ce33674dd1e
+
+	measure 'Data End Date' = ```
+			
+			    MAXX(ALL(fact_order_lines), fact_order_lines[entry_date])
+			```
+		formatString: General Date
+		lineageTag: a9362c88-b2ba-444d-91ca-8dadc7c2f3a2
+
+	measure 'Days in Period' = ```
+			
+			    VAR d0 = MIN(fact_order_lines[entry_date])
+			    VAR d1 = MAX(fact_order_lines[entry_date])
+			    RETURN IF(NOT ISBLANK(d0), DATEDIFF(d0, d1, DAY) + 1)
+			```
+		formatString: 0
+		lineageTag: 1bfda0ad-a6eb-40ea-b322-f594ee46f076
+
+	measure 'Revenue Multiplier' = ```
+			
+			    3
+			```
+		formatString: 0
+		lineageTag: 418e40da-6dfc-4ac9-b830-89a3afd21ec1
+
+	measure 'EBITDA Margin' = ```
+			
+			    0.67
+			```
+		lineageTag: ed0b9c45-b9f0-4cfa-bcb6-42f40698d9b0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Reorder Window Days' = ```
+			
+			    60
+			```
+		formatString: 0
+		lineageTag: 06e62a8e-bae0-4d83-9c32-1ac90ee6178d
+
+	measure 'Forecast Fit Months' = ```
+			
+			    6
+			```
+		formatString: 0
+		lineageTag: 9ce66b9a-8a76-49ed-bde8-b5e5e46921d7
+
+	measure 'Selected Granularity' = ```
+			
+			    SELECTEDVALUE(Granularity[Granularity], "Monthly")
+			```
+		lineageTag: de3ed60d-f373-4d1d-85f1-f52b9ef9fa46
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Selected Period Label' = ```
+			
+			    SWITCH([Selected Granularity], "Weekly", "per week", "Monthly", "per month", "Yearly", "per year")
+			```
+		lineageTag: 5fd46e2a-70e1-4403-a840-df4516220d12
+
+	measure 'Order Lines' = ```
+			
+			    COUNTROWS(fact_order_lines)
+			```
+		formatString: 0
+		lineageTag: 258f5d2e-ca37-4fdb-ab21-e03eee3c209f
+
+	measure Orders = ```
+			
+			    DISTINCTCOUNT(fact_order_lines[service_order_number])
+			```
+		formatString: 0
+		lineageTag: 31f4f014-f4ab-4061-b025-b3b2ac4d107f
+
+	measure 'Order Quantity' = ```
+			
+			    SUM(fact_order_lines[order_quantity])
+			```
+		lineageTag: 04bd1373-c756-40c6-856e-0106b970b42c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Delivered Quantity' = ```
+			
+			    SUM(fact_order_lines[delivery_quantity])
+			```
+		lineageTag: a964b5c7-196a-469e-a12c-b9d3d9b1861a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Order Amount' = ```
+			
+			    SUM(fact_order_lines[order_line_amount])
+			```
+		lineageTag: 067485e1-0581-4205-b142-e50f2dc2cc44
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Delivered Amount' = ```
+			
+			    SUM(fact_order_lines[delivery_line_amount])
+			```
+		lineageTag: 16959b3b-d1ad-4bd5-9adb-451879442cd2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Amount Lost' = ```
+			
+			    SUM(fact_order_lines[amount_lost])
+			```
+		lineageTag: 086d5193-bb37-4715-ad38-ebdc03b5cd5b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Restaurants Ordering' = ```
+			
+			    DISTINCTCOUNT(fact_order_lines[sk_restaurant])
+			```
+		formatString: 0
+		lineageTag: 0e134d99-3159-48ec-bc14-02a2030188ad
+
+	measure 'Fulfilled Lines' = ```
+			
+			    CALCULATE([Order Lines], fact_order_lines[fulfillment_status] = "Fulfilled")
+			```
+		formatString: 0
+		lineageTag: e46a640d-c745-4189-a4e3-0a71d1d8b2a8
+
+	measure 'Not Fulfilled Lines' = ```
+			
+			    CALCULATE([Order Lines], fact_order_lines[fulfillment_status] = "Not Fulfilled")
+			```
+		formatString: 0
+		lineageTag: cb837f01-98b0-4a08-8ba3-ea71dafbfee3
+
+	measure 'Quantity Fill Rate' = ```
+			
+			    DIVIDE([Delivered Quantity], [Order Quantity])
+			```
+		lineageTag: 79c63929-84ff-4ebd-ba60-5a18301a7355
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Insufficient Inventory Lines' = ```
+			
+			    CALCULATE([Order Lines],
+			        fact_order_lines[reason_code] = "69-Insufficient Inventory",
+			        fact_order_lines[fulfillment_status] = "Not Fulfilled")
+			```
+		formatString: 0
+		lineageTag: a2971fed-ce70-4e56-9b1f-42b5adc8a1be
+
+	measure 'Insufficient Inventory Amount' = ```
+			
+			    CALCULATE([Amount Lost],
+			        fact_order_lines[reason_code] = "69-Insufficient Inventory",
+			        fact_order_lines[fulfillment_status] = "Not Fulfilled")
+			```
+		lineageTag: 3b419e2f-4a4d-4b8c-a264-471570eb0fdd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Insufficient Inventory Rank (Account)' = ```
+			
+			    RANKX(
+			        ALL(dim_restaurant[customer_number]),
+			        [Insufficient Inventory Lines] + [Insufficient Inventory Amount] / 10000000,
+			        , DESC, SKIP)
+			```
+		formatString: 0
+		lineageTag: 71acb221-5222-4827-bf2f-7b57b7331b5b
+
+	measure 'Insufficient Inventory Rank (Restaurant)' = ```
+			
+			    RANKX(
+			        FILTER(ALL(dim_restaurant[restaurant_location_id]), dim_restaurant[restaurant_location_id] <> "99999"),
+			        [Insufficient Inventory Lines] + [Insufficient Inventory Amount] / 10000000,
+			        , DESC, SKIP)
+			```
+		formatString: 0
+		lineageTag: 20c20fab-61f7-4935-ae12-392ef2fc2a09
+
+	measure 'Top 3 Accounts Insufficient Inventory Amount' = ```
+			
+			    VAR Top3 =
+			        TOPN(3, ALL(dim_restaurant[customer_number]),
+			            [Insufficient Inventory Lines], DESC,
+			            [Insufficient Inventory Amount], DESC)
+			    RETURN CALCULATE([Insufficient Inventory Amount], KEEPFILTERS(Top3))
+			```
+		lineageTag: 3f8322fa-1de9-4761-8050-0800ae224b56
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Top 3 Restaurants Insufficient Inventory Amount' = ```
+			
+			    VAR Top3 =
+			        TOPN(3,
+			            FILTER(ALL(dim_restaurant[restaurant_location_id]), dim_restaurant[restaurant_location_id] <> "99999"),
+			            [Insufficient Inventory Lines], DESC,
+			            [Insufficient Inventory Amount], DESC)
+			    RETURN CALCULATE([Insufficient Inventory Amount], KEEPFILTERS(Top3))
+			```
+		lineageTag: 93fcd121-0ab8-43fe-bf26-83c3b23a5d9e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Daily Insufficient Inventory Amount' = ```
+			
+			    DIVIDE([Insufficient Inventory Amount], [Days in Period])
+			```
+		lineageTag: 8a6e34ab-67dd-4b97-abc6-92efaede74df
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Projected Annual Unmet Demand' = ```
+			
+			    [Avg Daily Insufficient Inventory Amount] * 365
+			```
+		lineageTag: b52be344-b3b2-4062-8e6e-ad7494489a7f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Projected Annual Revenue' = ```
+			
+			    [Projected Annual Unmet Demand] * [Revenue Multiplier]
+			```
+		lineageTag: dd2a7848-8ea0-4ab1-a2ca-169e3e13f765
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Projected Annual Profit' = ```
+			
+			    [Projected Annual Revenue] * [EBITDA Margin]
+			```
+		lineageTag: bedb8aa3-3279-45cc-8f26-03a5b1cde7f4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Sales per Week' = ```
+			
+			    AVERAGEX(VALUES(dim_date[week_start_date]), [Order Amount])
+			```
+		lineageTag: 5f0b7f56-7d6a-4c8e-b628-357b9ef14dcd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Sales per Month' = ```
+			
+			    AVERAGEX(VALUES(dim_date[month_start_date]), [Order Amount])
+			```
+		lineageTag: 55707509-baab-4570-90a1-d78854707c7a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Sales per Year' = ```
+			
+			    AVERAGEX(VALUES(dim_date[year]), [Order Amount])
+			```
+		lineageTag: 1e94c392-430a-4d91-a6f8-10c0cf1353b9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Sales (Selected)' = ```
+			
+			    SWITCH([Selected Granularity],
+			        "Weekly",  AVERAGEX(VALUES(dim_date[week_start_date]), [Order Amount]),
+			        "Monthly", AVERAGEX(VALUES(dim_date[month_start_date]), [Order Amount]),
+			        "Yearly",  AVERAGEX(VALUES(dim_date[year]), [Order Amount]))
+			```
+		lineageTag: 0b055cd8-5a42-42b5-98e6-6cc5dd52c98f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Orders (Selected)' = ```
+			
+			    SWITCH([Selected Granularity],
+			        "Weekly",  AVERAGEX(VALUES(dim_date[week_start_date]), [Orders]),
+			        "Monthly", AVERAGEX(VALUES(dim_date[month_start_date]), [Orders]),
+			        "Yearly",  AVERAGEX(VALUES(dim_date[year]), [Orders]))
+			```
+		lineageTag: a38d49c4-d445-4020-9515-b5f7bea2e0e7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Units (Selected)' = ```
+			
+			    SWITCH([Selected Granularity],
+			        "Weekly",  AVERAGEX(VALUES(dim_date[week_start_date]), [Order Quantity]),
+			        "Monthly", AVERAGEX(VALUES(dim_date[month_start_date]), [Order Quantity]),
+			        "Yearly",  AVERAGEX(VALUES(dim_date[year]), [Order Quantity]))
+			```
+		lineageTag: e9f6bc2d-4060-41fa-911e-c89cb438d6fe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Order Amount PM' = ```
+			
+			    CALCULATE([Order Amount], DATEADD(dim_date[date], -1, MONTH))
+			```
+		lineageTag: d38a7b31-fb63-4d1f-a1bd-35402c081ab3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Variation % MoM' = ```
+			
+			    DIVIDE([Order Amount] - [Order Amount PM], [Order Amount PM])
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: d4207508-0640-4db5-8ffc-50c679293db2
+
+	measure 'Order Amount PY LFL' = ```
+			
+			    VAR DE = [Data End Date]
+			    VAR S = DATE(YEAR(DE) - 1, 1, 1)
+			    VAR E = EDATE(DE, -12)
+			    RETURN CALCULATE([Order Amount], REMOVEFILTERS(dim_date), dim_date[date] >= S, dim_date[date] <= E)
+			```
+		lineageTag: 609ad7e0-2caf-48a4-9da9-4149ce3b0d97
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Order Quantity PY LFL' = ```
+			
+			    VAR DE = [Data End Date]
+			    VAR S = DATE(YEAR(DE) - 1, 1, 1)
+			    VAR E = EDATE(DE, -12)
+			    RETURN CALCULATE([Order Quantity], REMOVEFILTERS(dim_date), dim_date[date] >= S, dim_date[date] <= E)
+			```
+		lineageTag: 2dfe4b2a-9875-465e-a5a0-e839b930e387
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YoY Sales % LFL' = ```
+			
+			    DIVIDE([Order Amount YTD] - [Order Amount PY LFL], [Order Amount PY LFL])
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: a22224b9-aaf3-4cf6-8244-0e1d08d0197a
+
+	measure 'YoY Volume % LFL' = ```
+			
+			    DIVIDE([Order Quantity YTD] - [Order Quantity PY LFL], [Order Quantity PY LFL])
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 1965ffe4-7daa-4168-a923-5ee5df1e914c
+
+	measure 'Is Decline' = ```
+			
+			    IF([Order Quantity PY LFL] > 0 && [Order Quantity YTD] < [Order Quantity PY LFL], 1, 0)
+			```
+		formatString: 0
+		lineageTag: a9b0decd-c76b-47ff-b529-19e7fd3ef21f
+
+	measure 'Restaurants in Decline' = ```
+			
+			    SUMX(VALUES(dim_restaurant[restaurant_location_id]), [Is Decline])
+			```
+		formatString: 0
+		lineageTag: 2e79698d-1149-434b-a407-4e0f9cf94db0
+
+	measure 'Restaurants with PY Activity' = ```
+			
+			    SUMX(VALUES(dim_restaurant[restaurant_location_id]), IF([Order Quantity PY LFL] > 0, 1, 0))
+			```
+		formatString: 0
+		lineageTag: 698fe115-bd37-47f2-8584-814cca378bff
+
+	measure 'Growth Contribution' = ```
+			
+			    [Order Amount YTD] - [Order Amount PY LFL]
+			```
+		lineageTag: ccbb403e-032c-40da-a0d5-6d25fb1c3e2e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Share of Growth' = ```
+			
+			    DIVIDE([Growth Contribution], CALCULATE([Growth Contribution], ALLSELECTED(dim_restaurant)))
+			```
+		lineageTag: d168aa66-ea02-428d-8337-9f67e425e3f7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Restaurants in Profile' = ```
+			
+			    COUNTROWS(dim_restaurant)
+			```
+		formatString: 0
+		lineageTag: 0c890897-4346-46e1-bc04-f650e9eadd65
+
+	measure 'Active Restaurants' = ```
+			
+			    CALCULATE(DISTINCTCOUNT(dim_restaurant[restaurant_location_id]), dim_restaurant[client_status] = "Active Client")
+			```
+		formatString: 0
+		lineageTag: c16b480f-b805-44ec-b189-c4671a3eec04
+
+	measure 'Lost Restaurants' = ```
+			
+			    CALCULATE(DISTINCTCOUNT(dim_restaurant[restaurant_location_id]), dim_restaurant[client_status] = "Lost Client")
+			```
+		formatString: 0
+		lineageTag: fea09f04-9ec2-4f96-bd58-3c81c9848cba
+
+	measure 'Restaurant Age (Days)' = ```
+			
+			    DATEDIFF(MIN(dim_restaurant[first_order_date]), [Data End Date], DAY)
+			```
+		formatString: 0
+		lineageTag: f1261ae4-c483-4bff-985d-dbd77915248c
+
+	measure 'Avg Restaurant Age (Days)' = ```
+			
+			    AVERAGEX(dim_restaurant, DATEDIFF(dim_restaurant[first_order_date], [Data End Date], DAY))
+			```
+		lineageTag: 9064997a-b3f3-4022-b672-d07cac8cbfd4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'New Restaurants' = ```
+			
+			    CALCULATE(COUNTROWS(dim_restaurant), USERELATIONSHIP(dim_restaurant[first_order_date], dim_date[date]))
+			```
+		formatString: 0
+		lineageTag: 8cd0169e-dbe7-46b5-8d90-46b612dd7448
+
+	measure 'Peer Avg Amount (Area)' = ```
+			
+			    VAR a = SELECTEDVALUE(dim_restaurant[restaurant_area_name])
+			    RETURN CALCULATE(
+			        AVERAGEX(VALUES(dim_restaurant[restaurant_location_id]), [Order Amount]),
+			        REMOVEFILTERS(dim_restaurant),
+			        dim_restaurant[restaurant_area_name] = a)
+			```
+		lineageTag: 5a4fd73b-8146-4900-8d8f-d48cb07a00c1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'vs Peer Avg %' = ```
+			
+			    DIVIDE([Order Amount] - [Peer Avg Amount (Area)], [Peer Avg Amount (Area)])
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: d4f59f12-7de0-4af7-94e6-c7a20d21776c
+
+	measure 'Rank in Area' = ```
+			
+			    VAR a = SELECTEDVALUE(dim_restaurant[restaurant_area_name])
+			    RETURN IF(NOT ISBLANK(a) && NOT ISBLANK([Order Amount]),
+			        RANKX(
+			            CALCULATETABLE(VALUES(dim_restaurant[restaurant_location_id]),
+			                REMOVEFILTERS(dim_restaurant),
+			                dim_restaurant[restaurant_area_name] = a),
+			            [Order Amount], , DESC, DENSE))
+			```
+		formatString: 0
+		lineageTag: d41dfe4a-2826-491a-8f58-5b67960d16a0
+
+	measure 'Restaurants Above Peer Avg' = ```
+			
+			    SUMX(VALUES(dim_restaurant[restaurant_location_id]), IF([Order Amount] > [Peer Avg Amount (Area)], 1, 0))
+			```
+		formatString: 0
+		lineageTag: d20383e5-2fb8-4a1c-ac5c-d4481b3692d8
+
+	measure 'Restaurants Below Peer Avg' = ```
+			
+			    SUMX(VALUES(dim_restaurant[restaurant_location_id]), IF(NOT ISBLANK([Order Amount]) && [Order Amount] <= [Peer Avg Amount (Area)], 1, 0))
+			```
+		formatString: 0
+		lineageTag: d86ffc35-5ffa-4b94-8f68-489299fb9b33
+
+	measure 'Share Above Peer Avg' = ```
+			
+			    DIVIDE([Restaurants Above Peer Avg], [Restaurants Above Peer Avg] + [Restaurants Below Peer Avg])
+			```
+		lineageTag: 04ed2e62-7a7e-4975-abdd-917bd8681a6d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Unmet Lines (Eligible)' = ```
+			
+			    VAR Cutoff = [Data End Date] - [Reorder Window Days]
+			    RETURN CALCULATE([Order Lines],
+			        fact_order_lines[fulfillment_status] = "Not Fulfilled",
+			        fact_order_lines[entry_date] <= Cutoff)
+			```
+		formatString: 0
+		lineageTag: 63a70791-3664-449f-b5fa-d04373e5cc88
+
+	measure 'Unmet Amount (Eligible)' = ```
+			
+			    VAR Cutoff = [Data End Date] - [Reorder Window Days]
+			    RETURN CALCULATE([Amount Lost],
+			        fact_order_lines[fulfillment_status] = "Not Fulfilled",
+			        fact_order_lines[entry_date] <= Cutoff)
+			```
+		lineageTag: 41ebaaba-67aa-49dc-b4a5-4a1a25f6102c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Reordered Any Lines' = ```
+			
+			    VAR W = [Reorder Window Days]
+			    VAR Cutoff = [Data End Date] - W
+			    RETURN
+			    COUNTROWS(
+			        FILTER(
+			            CALCULATETABLE(
+			                fact_order_lines,
+			                fact_order_lines[fulfillment_status] = "Not Fulfilled",
+			                fact_order_lines[entry_date] <= Cutoff),
+			            VAR r = fact_order_lines[sk_restaurant]
+			                VAR p = fact_order_lines[sk_product]
+			                VAR d = fact_order_lines[entry_date]
+			                VAR q = fact_order_lines[order_quantity]
+			                RETURN
+			                    COUNTROWS(
+			                        CALCULATETABLE(
+			                            fact_order_lines,
+			                            REMOVEFILTERS(),
+			                            fact_order_lines[sk_restaurant] = r,
+			                            fact_order_lines[sk_product] = p,
+			                            fact_order_lines[entry_date] > d,
+			                            fact_order_lines[entry_date] <= d + W)) > 0))
+			```
+		formatString: 0
+		lineageTag: 28ec9f38-ae75-41fa-b70e-8074d6aca8f4
+
+	measure 'Reordered Same or Higher Lines' = ```
+			
+			    VAR W = [Reorder Window Days]
+			    VAR Cutoff = [Data End Date] - W
+			    RETURN
+			    COUNTROWS(
+			        FILTER(
+			            CALCULATETABLE(
+			                fact_order_lines,
+			                fact_order_lines[fulfillment_status] = "Not Fulfilled",
+			                fact_order_lines[entry_date] <= Cutoff),
+			            VAR r = fact_order_lines[sk_restaurant]
+			                VAR p = fact_order_lines[sk_product]
+			                VAR d = fact_order_lines[entry_date]
+			                VAR q = fact_order_lines[order_quantity]
+			                RETURN
+			                    COUNTROWS(
+			                        CALCULATETABLE(
+			                            fact_order_lines,
+			                            REMOVEFILTERS(),
+			                            fact_order_lines[sk_restaurant] = r,
+			                            fact_order_lines[sk_product] = p,
+			                            fact_order_lines[entry_date] > d,
+			                            fact_order_lines[entry_date] <= d + W,
+			                            fact_order_lines[order_quantity] >= q)) > 0))
+			```
+		formatString: 0
+		lineageTag: 3be12b3d-2ec7-4be8-8df6-1274e97cb939
+
+	measure 'Reordered Higher Lines' = ```
+			
+			    VAR W = [Reorder Window Days]
+			    VAR Cutoff = [Data End Date] - W
+			    RETURN
+			    COUNTROWS(
+			        FILTER(
+			            CALCULATETABLE(
+			                fact_order_lines,
+			                fact_order_lines[fulfillment_status] = "Not Fulfilled",
+			                fact_order_lines[entry_date] <= Cutoff),
+			            VAR r = fact_order_lines[sk_restaurant]
+			                VAR p = fact_order_lines[sk_product]
+			                VAR d = fact_order_lines[entry_date]
+			                VAR q = fact_order_lines[order_quantity]
+			                RETURN
+			                    COUNTROWS(
+			                        CALCULATETABLE(
+			                            fact_order_lines,
+			                            REMOVEFILTERS(),
+			                            fact_order_lines[sk_restaurant] = r,
+			                            fact_order_lines[sk_product] = p,
+			                            fact_order_lines[entry_date] > d,
+			                            fact_order_lines[entry_date] <= d + W,
+			                            fact_order_lines[order_quantity] > q)) > 0))
+			```
+		formatString: 0
+		lineageTag: 198ab81b-2bf3-470b-a38c-b012a02a1eed
+
+	measure 'Reordered Equal Lines' = ```
+			
+			    [Reordered Same or Higher Lines] - [Reordered Higher Lines]
+			```
+		formatString: 0
+		lineageTag: 6296b2c8-7385-41d7-8d75-ec5cac85dcb4
+
+	measure 'Reordered Lower Lines' = ```
+			
+			    [Reordered Any Lines] - [Reordered Same or Higher Lines]
+			```
+		formatString: 0
+		lineageTag: 08fe41ea-a691-4037-968f-32a2fff4be38
+
+	measure 'Not Reordered Lines' = ```
+			
+			    [Unmet Lines (Eligible)] - [Reordered Any Lines]
+			```
+		formatString: 0
+		lineageTag: 4ef75067-6076-41be-8835-98e5628c4731
+
+	measure 'Reorder Rate (Same or Higher)' = ```
+			
+			    DIVIDE([Reordered Same or Higher Lines], [Unmet Lines (Eligible)])
+			```
+		lineageTag: e4564487-7573-4dcd-9e3a-a22d9d1ec3b8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Recovered Amount' = ```
+			
+			    VAR W = [Reorder Window Days]
+			    VAR Cutoff = [Data End Date] - W
+			    RETURN
+			    SUMX(
+			        FILTER(
+			            CALCULATETABLE(
+			                fact_order_lines,
+			                fact_order_lines[fulfillment_status] = "Not Fulfilled",
+			                fact_order_lines[entry_date] <= Cutoff),
+			            VAR r = fact_order_lines[sk_restaurant]
+			                VAR p = fact_order_lines[sk_product]
+			                VAR d = fact_order_lines[entry_date]
+			                VAR q = fact_order_lines[order_quantity]
+			                RETURN
+			                    COUNTROWS(
+			                        CALCULATETABLE(
+			                            fact_order_lines,
+			                            REMOVEFILTERS(),
+			                            fact_order_lines[sk_restaurant] = r,
+			                            fact_order_lines[sk_product] = p,
+			                            fact_order_lines[entry_date] > d,
+			                            fact_order_lines[entry_date] <= d + W,
+			                            fact_order_lines[order_quantity] >= q)) > 0),
+			        fact_order_lines[amount_lost])
+			```
+		lineageTag: 99e25ba4-224d-44a2-93c7-9785900505ad
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Unrecovered Amount' = ```
+			
+			    [Unmet Amount (Eligible)] - [Recovered Amount]
+			```
+		lineageTag: cb4118a0-687e-4d3c-a91e-34c57e3c4e6f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Recovered Share of Unmet Amount' = ```
+			
+			    DIVIDE([Recovered Amount], [Unmet Amount (Eligible)])
+			```
+		lineageTag: a065060e-3c2c-4f21-9dba-948d46c2b380
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'MA Base' = ```
+			
+			    VAR LastM = DATE(YEAR([Data End Date]), MONTH([Data End Date]), 1)
+			    RETURN CALCULATE(
+			        AVERAGEX(
+			            FILTER(ALL(dim_date[month_start_date]),
+			                dim_date[month_start_date] > EDATE(LastM, -3) && dim_date[month_start_date] <= LastM),
+			            [Order Amount]),
+			        REMOVEFILTERS(dim_date))
+			```
+		lineageTag: e39d8020-1c51-4fc8-afb8-11c587e7bc07
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Forecast Moving Avg' = ```
+			
+			    VAR LastM = DATE(YEAR([Data End Date]), MONTH([Data End Date]), 1)
+			    VAR Ahead = DATEDIFF(LastM, MAX(dim_date[month_start_date]), MONTH)
+			    RETURN IF(Ahead >= 1 && Ahead <= 3, [MA Base])
+			```
+		lineageTag: dba3523c-5805-499f-9dac-5d87c033cc26
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Forecast Linear' = ```
+			
+			    VAR N = [Forecast Fit Months]
+			    VAR LastM = DATE(YEAR([Data End Date]), MONTH([Data End Date]), 1)
+			    VAR Ahead = DATEDIFF(LastM, MAX(dim_date[month_start_date]), MONTH)
+			    VAR T =
+			        CALCULATETABLE(
+			            ADDCOLUMNS(
+			                FILTER(ALL(dim_date[month_start_date]),
+			                    dim_date[month_start_date] > EDATE(LastM, -N) && dim_date[month_start_date] <= LastM),
+			                "@x", DATEDIFF(LastM, dim_date[month_start_date], MONTH),
+			                "@y", [Order Amount]),
+			            REMOVEFILTERS(dim_date))
+			    VAR cnt = COUNTROWS(T)
+			    VAR sx  = SUMX(T, [@x])
+			    VAR sy  = SUMX(T, [@y])
+			    VAR sxy = SUMX(T, [@x] * [@y])
+			    VAR sxx = SUMX(T, [@x] * [@x])
+			    VAR slope = DIVIDE(cnt * sxy - sx * sy, cnt * sxx - sx * sx)
+			    VAR intercept = DIVIDE(sy - slope * sx, cnt)
+			    RETURN IF(Ahead >= 1 && Ahead <= 3, MAX(0, intercept + slope * Ahead))
+			```
+		lineageTag: e92f20fb-4ce5-4c42-a611-cdcb630b5b6c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Forecast Next 3 Months Total (MA)' = ```
+			
+			    [MA Base] * 3
+			```
+		lineageTag: 6062a031-5777-4da8-ad5c-bc9cd8fc56ce
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Forecast Window Flag' = ```
+			
+			    VAR LastM = DATE(YEAR([Data End Date]), MONTH([Data End Date]), 1)
+			    VAR m = MAX(dim_date[month_start_date])
+			    RETURN IF(m > EDATE(LastM, -[Forecast Fit Months]) && m <= EDATE(LastM, 3), 1, 0)
+			```
+		formatString: 0
+		lineageTag: 8a628762-82d5-4603-840c-37443c8ffe5b
+
+	measure 'Restaurant Rank (Order Amount)' = ```
+			
+			    RANKX(
+			        FILTER(ALL(dim_restaurant[restaurant_location_id]), dim_restaurant[restaurant_location_id] <> "99999"),
+			        [Order Amount], , DESC, SKIP)
+			```
+		formatString: 0
+		lineageTag: 8f7737a3-b000-419d-921f-bc339a07a36b
+
+	measure 'Headline Coverage' = ```
+			
+			    FORMAT([Restaurants Ordering], "#,0") & " restaurants ordering across " & FORMAT([Order Lines], "#,0") & " order lines"
+			```
+		lineageTag: 7881e6d4-7b52-4f5d-b67f-046e14756951
+
+	measure 'Headline Decline' = ```
+			
+			    FORMAT([Restaurants in Decline], "#,0") & " of " & FORMAT([Restaurants with PY Activity], "#,0") & " restaurants with prior-year orders ordered less"
+			```
+		lineageTag: 4774ce2b-c550-4041-8592-a8f5de526ae2
+
+	measure 'Headline Operational' = ```
+			
+			    "Average " & [Selected Period Label] & ": " & FORMAT([Avg Sales (Selected)], "$#,0") & " in sales, " & FORMAT([Avg Orders (Selected)], "#,0") & " orders, " & FORMAT([Avg Units (Selected)], "#,0") & " units"
+			```
+		lineageTag: 1894824e-8404-4d43-8a0b-375c773c0e4d
+
+	measure 'Headline Objective I' = ```
+			
+			    FORMAT([Insufficient Inventory Amount], "$#,0") & " lost to insufficient inventory; " & FORMAT([Projected Annual Revenue], "$#,0") & " revenue at risk per year"
+			```
+		lineageTag: f65fba30-6b0b-44ad-a0d5-ec60c166d052
+
+	measure 'Headline CEO' = ```
+			
+			    FORMAT([Reorder Rate (Same or Higher)], "0.0%") & " of unmet order lines were reordered at the same or higher quantity within " & [Reorder Window Days] & " days"
+			```
+		lineageTag: 9cdeab50-ea50-4702-a558-e130e6475065
+
+	measure 'Headline Unrecovered' = ```
+			
+			    FORMAT([Unrecovered Amount], "$#,0") & " of " & FORMAT([Unmet Amount (Eligible)], "$#,0") & " unmet demand was not recovered"
+			```
+		lineageTag: 95274a4d-bcd0-4faa-b3a4-1d5e3db74125
+
+	measure 'Headline Forecast' = ```
+			
+			    "Next 3 months: about " & FORMAT([MA Base], "$#,0") & " per month (3-month moving average)"
+			```
+		lineageTag: 5a181460-4b5a-468d-acfc-649a8f5db5c7
+
+	measure 'Headline Peers' = ```
+			
+			    FORMAT([Share Above Peer Avg], "0%") & " of restaurants outperform their area peers"
+			```
+		lineageTag: f8fd4d90-47d0-4fff-acee-8f98e6a7d2dd
+
+	measure 'Product Rank (Quantity)' = ```
+			
+			    RANKX(ALL(dim_product[product_number]), [Order Quantity], , DESC, SKIP)
+			```
+		formatString: 0
+		lineageTag: 910b2e2d-dd0b-46ea-8a31-b71455ad6b64
+
+	measure 'Avg Orders per Week' = ```
+			
+			    AVERAGEX(VALUES(dim_date[week_start_date]), [Orders])
+			```
+		lineageTag: 6c54d00e-7571-4465-9910-bb3de52b573e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Orders per Month' = ```
+			
+			    AVERAGEX(VALUES(dim_date[month_start_date]), [Orders])
+			```
+		lineageTag: 1a9597a8-3058-483d-9a0a-b15ac673a899
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Orders per Year' = ```
+			
+			    AVERAGEX(VALUES(dim_date[year]), [Orders])
+			```
+		lineageTag: c3a59136-c156-4f6b-b5b9-444e8307e32a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Units per Week' = ```
+			
+			    AVERAGEX(VALUES(dim_date[week_start_date]), [Order Quantity])
+			```
+		lineageTag: 2e6ceac5-bf0d-4dc9-a64c-4f9636dd7009
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Units per Month' = ```
+			
+			    AVERAGEX(VALUES(dim_date[month_start_date]), [Order Quantity])
+			```
+		lineageTag: 9879c63a-a53f-4305-bc05-40dc326fdd4d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Units per Year' = ```
+			
+			    AVERAGEX(VALUES(dim_date[year]), [Order Quantity])
+			```
+		lineageTag: 19dee7e9-a51f-41f7-8af9-c7e0ea105f56
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Order Amount YTD' = ```
+			
+			    VAR DE = [Data End Date]
+			    VAR S = DATE(YEAR(DE), 1, 1)
+			    RETURN CALCULATE([Order Amount], REMOVEFILTERS(dim_date), dim_date[date] >= S, dim_date[date] <= DE)
+			```
+		lineageTag: 7b931207-d4db-4559-a743-5026666f5e29
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Order Quantity YTD' = ```
+			
+			    VAR DE = [Data End Date]
+			    VAR S = DATE(YEAR(DE), 1, 1)
+			    RETURN CALCULATE([Order Quantity], REMOVEFILTERS(dim_date), dim_date[date] >= S, dim_date[date] <= DE)
+			```
+		lineageTag: 46b748f6-fa4f-4ecb-9608-093a5e29b073
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column1
+		isHidden
+		formatString: 0
+		lineageTag: 54d5ffc1-836a-4aaf-bb4a-fe51220b7807
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column1]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Metrics = calculated
+		mode: import
+		source = ROW("Column1", BLANK())
+
+	annotation PBI_Id = 1cdd9040671047cc80f733c89fe41bac
+

@@ -1,0 +1,59 @@
+table dim_warehouse
+	lineageTag: 69ab8b95-a994-4253-be5c-90ee820297b2
+	sourceLineageTag: [gold].[dim_warehouse]
+
+	column delivery_warehouse
+		dataType: string
+		lineageTag: fba42da5-6c6b-4a6b-b67d-5045e2b8da0a
+		sourceLineageTag: delivery_warehouse
+		summarizeBy: none
+		sourceColumn: delivery_warehouse
+
+		annotation SummarizationSetBy = Automatic
+
+	column sk_warehouse
+		dataType: string
+		isHidden
+		lineageTag: 232f9151-02d4-45c4-add6-ff38e2fb3ba5
+		sourceLineageTag: sk_warehouse
+		summarizeBy: none
+		sourceColumn: sk_warehouse
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column warehouse_area_name
+		dataType: string
+		lineageTag: af4384b3-c500-4942-9369-55611c0ee098
+		sourceLineageTag: warehouse_area_name
+		summarizeBy: none
+		sourceColumn: warehouse_area_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column warehouse_district_name
+		dataType: string
+		lineageTag: ffceba10-92e5-411d-9a14-13137e9603cc
+		sourceLineageTag: warehouse_district_name
+		summarizeBy: none
+		sourceColumn: warehouse_district_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column region_name
+		dataType: string
+		lineageTag: 15688544-fd3a-433c-88cd-c0f89acb1aa1
+		sourceLineageTag: region_name
+		summarizeBy: none
+		sourceColumn: region_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_warehouse = entity
+		mode: directLake
+		source
+			entityName: dim_warehouse
+			schemaName: gold
+			expressionSource: 'DirectLake - lh_chowhoundltd_orders'
+

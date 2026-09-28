@@ -1,0 +1,19 @@
+table Granularity
+	lineageTag: 7ea82ff2-2145-4979-af56-3aaf90dd3fe5
+
+	column Granularity
+		formatString: 0
+		lineageTag: 400a8692-275f-4ebe-9842-183dd983d95e
+		summarizeBy: sum
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Granularity = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 5efd35311eaa49aeb259764a8236b2ce
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

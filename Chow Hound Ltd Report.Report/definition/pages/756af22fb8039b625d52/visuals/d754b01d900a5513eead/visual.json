@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "d754b01d900a5513eead",
+  "position": {
+    "x": 128,
+    "y": 1440,
+    "z": 16000,
+    "height": 80,
+    "width": 1744,
+    "tabOrder": 16000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Jan-Mar 2023 holds 81.6% of all order lines (56,207) against 12,691 in the previous 24 months. All lines belong to the New POS. Restaurants with orders rise from 1,490 in 2022 to 5,645, and only about 860 appear in both systems. All delivery dates fall in Jan-Mar 2023. March is below January and February. This is the start of the new POS, not organic growth.",
+                    "textStyle": {
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

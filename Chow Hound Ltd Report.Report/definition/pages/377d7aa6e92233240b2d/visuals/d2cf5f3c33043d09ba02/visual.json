@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "d2cf5f3c33043d09ba02",
+  "position": {
+    "x": 1136,
+    "y": 1728,
+    "z": 20000,
+    "height": 192,
+    "width": 816,
+    "tabOrder": 20000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Method: three-month moving average carried forward (headline) and a linear trend over the last 6 months (sensitivity). The data are a coverage ramp, so the linear trend rises to about $21.6M by June while a 3-month fit falls to zero; the wide spread means low confidence.",
+                    "textStyle": {
+                      "fontSize": "20pt"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

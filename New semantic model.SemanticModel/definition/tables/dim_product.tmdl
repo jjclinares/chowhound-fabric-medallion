@@ -1,0 +1,32 @@
+table dim_product
+	lineageTag: 1751b735-8e26-4b91-a28e-8d0fc57f2b07
+	sourceLineageTag: [gold].[dim_product]
+
+	column product_number
+		dataType: string
+		lineageTag: ac0f16aa-09a3-492e-8bd2-d71b998d917e
+		sourceLineageTag: product_number
+		summarizeBy: none
+		sourceColumn: product_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column sk_product
+		dataType: string
+		isHidden
+		lineageTag: 0ee1b9ac-1aac-40a1-8d72-4ee6362452b0
+		sourceLineageTag: sk_product
+		summarizeBy: none
+		sourceColumn: sk_product
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_product = entity
+		mode: directLake
+		source
+			entityName: dim_product
+			schemaName: gold
+			expressionSource: 'DirectLake - lh_chowhoundltd_orders'
+
