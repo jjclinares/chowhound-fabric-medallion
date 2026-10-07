@@ -1,0 +1,246 @@
+table fact_order_lines
+	lineageTag: c2f1dc84-cbc8-4937-854e-23eb3d55f76a
+	sourceLineageTag: [gold].[fact_order_lines]
+
+	column sk_order_line
+		dataType: string
+		isHidden
+		lineageTag: cff11bf1-2dc2-40ed-9d38-5d6b66ec5f77
+		sourceLineageTag: sk_order_line
+		summarizeBy: none
+		sourceColumn: sk_order_line
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column service_order_number
+		dataType: string
+		lineageTag: 797bbba9-e566-4988-a5b4-325f9d6c7219
+		sourceLineageTag: service_order_number
+		summarizeBy: none
+		sourceColumn: service_order_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_sequence
+		dataType: int64
+		formatString: 0
+		lineageTag: cafa107e-6a3b-4fee-b1f2-73a60cc5dcf6
+		sourceLineageTag: line_sequence
+		summarizeBy: none
+		sourceColumn: line_sequence
+
+		changedProperty = SummarizeBy
+
+		annotation SummarizationSetBy = User
+
+	column sk_restaurant
+		dataType: string
+		isHidden
+		lineageTag: 03c852ea-98b7-4c9b-9599-b9603769d87a
+		sourceLineageTag: sk_restaurant
+		summarizeBy: none
+		sourceColumn: sk_restaurant
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column sk_product
+		dataType: string
+		isHidden
+		lineageTag: 45355cb0-e440-4397-a4ee-2f3518ececfb
+		sourceLineageTag: sk_product
+		summarizeBy: none
+		sourceColumn: sk_product
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column sk_warehouse
+		dataType: string
+		isHidden
+		lineageTag: d88d7702-3c02-4de6-bea7-24d119a642f4
+		sourceLineageTag: sk_warehouse
+		summarizeBy: none
+		sourceColumn: sk_warehouse
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column sk_date_entry
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0f8b9fb4-cf20-4aa8-82d1-c08ed874312d
+		sourceLineageTag: sk_date_entry
+		summarizeBy: none
+		sourceColumn: sk_date_entry
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column sk_date_delivery
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 492cf7d4-6ed6-40c1-a3b5-2c0dfb29ff70
+		sourceLineageTag: sk_date_delivery
+		summarizeBy: sum
+		sourceColumn: sk_date_delivery
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column service_level_status
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 12c8a34d-0de9-4725-9344-1d675d144c25
+		sourceLineageTag: service_level_status
+		summarizeBy: none
+		sourceColumn: service_level_status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_flag
+		dataType: string
+		isHidden
+		lineageTag: cefff3b4-c0a3-4842-bdc8-5794acef6901
+		sourceLineageTag: update_flag
+		summarizeBy: none
+		sourceColumn: update_flag
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column reason_code
+		dataType: string
+		isHidden
+		lineageTag: 61eaa3ba-02ec-44f4-a9c2-0ccd8be5041e
+		sourceLineageTag: reason_code
+		summarizeBy: none
+		sourceColumn: reason_code
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column original_quantity
+		dataType: double
+		lineageTag: 029197e7-9b4e-44f6-ba79-14309000e6f7
+		sourceLineageTag: original_quantity
+		summarizeBy: sum
+		sourceColumn: original_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_quantity
+		dataType: double
+		lineageTag: e2daea1e-9d5c-4c27-8be2-29a290baf8ae
+		sourceLineageTag: order_quantity
+		summarizeBy: sum
+		sourceColumn: order_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column delivery_quantity
+		dataType: double
+		lineageTag: 4d2da078-6745-4c80-9692-7f7ce12aa555
+		sourceLineageTag: delivery_quantity
+		summarizeBy: sum
+		sourceColumn: delivery_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_line_amount
+		dataType: double
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 2ea404b5-fd23-461e-9638-153838b133d1
+		sourceLineageTag: order_line_amount
+		summarizeBy: sum
+		sourceColumn: order_line_amount
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column delivery_line_amount
+		dataType: double
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 8014d1f3-2caf-4001-bf84-2c5b09d42295
+		sourceLineageTag: delivery_line_amount
+		summarizeBy: sum
+		sourceColumn: delivery_line_amount
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column amount_lost
+		dataType: double
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 12d78497-b6d9-4ce2-972c-0772847c4be2
+		sourceLineageTag: amount_lost
+		summarizeBy: sum
+		sourceColumn: amount_lost
+
+		changedProperty = FormatString
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column source_system
+		dataType: string
+		lineageTag: ba4e891b-4c74-4b31-a8fd-aa822c9c6475
+		sourceLineageTag: source_system
+		summarizeBy: none
+		sourceColumn: source_system
+
+		annotation SummarizationSetBy = Automatic
+
+	column entry_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: e8da1bf0-acae-469f-9554-9df06445358e
+		sourceLineageTag: entry_date
+		summarizeBy: none
+		sourceColumn: entry_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column fulfillment_status
+		dataType: string
+		lineageTag: abe9a638-7794-4e61-b40a-9898e6204453
+		sourceLineageTag: fulfillment_status
+		summarizeBy: none
+		sourceColumn: fulfillment_status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_order_lines = entity
+		mode: directLake
+		source
+			entityName: fact_order_lines
+			schemaName: gold
+			expressionSource: 'DirectLake - lh_chowhoundltd_orders'
+

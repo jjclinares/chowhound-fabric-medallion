@@ -1,0 +1,38 @@
+relationship 01f8a2c9-e3f3-3c8c-78d2-2495062f045a
+	fromColumn: fact_order_lines.sk_restaurant
+	toColumn: dim_restaurant.sk_restaurant
+
+relationship 82762b3d-e3a9-9947-a794-5b402a3fa1bc
+	fromColumn: fact_order_lines.sk_product
+	toColumn: dim_product.sk_product
+
+relationship ff053e66-7512-81ff-8fb1-5eb5481a54bf
+	fromColumn: fact_order_lines.sk_warehouse
+	toColumn: dim_warehouse.sk_warehouse
+
+relationship f4b958c5-c232-c77d-c8d6-21ac82aea240
+	fromColumn: fact_order_lines.sk_date_entry
+	toColumn: dim_date.sk_date
+
+relationship 3973197e-0e79-bc29-f906-4e7feb11edba
+	isActive: false
+	fromColumn: fact_order_lines.sk_date_delivery
+	toColumn: dim_date.sk_date
+
+relationship b7234073-e1f6-0b4e-6a78-ad156483c128
+	fromColumn: fact_order_lines.service_level_status
+	toColumn: dim_status.sk_status
+
+relationship cdf44b0c-3b08-a13c-a476-19575ff62734
+	fromColumn: fact_order_lines.reason_code
+	toColumn: dim_reason_code.sk_reason_code
+
+relationship f1f5d82a-662e-4194-8cbe-4799ea2c70c3
+	fromColumn: fact_order_lines.update_flag
+	toColumn: dim_movement_type.sk_movement_type
+
+relationship e3790ded-42a4-30dc-e5f8-959d3fa263b1
+	isActive: false
+	fromColumn: dim_restaurant.first_order_date
+	toColumn: dim_date.date
+
