@@ -1,4 +1,46 @@
-# chowhoundltd_jamer
+# 🍽️ ChowHound Restaurant Profile: Microsoft Fabric & Power BI
+
+## 📌 At a glance
+
+**🧭 Project type:** Data engineering and business intelligence. A data pipeline plus a Power BI model built on Microsoft Fabric, from a raw Excel file to a business-ready report.
+
+**💡 In one sentence:** it turns messy restaurant order data into one trusted profile of every restaurant, and uses it to test a claim made by the company's CEO.
+
+**❓ The question:** the CEO believes the money lost on unfilled orders is small, because restaurants reorder the same items within 60 days. Is that true?
+
+**🎯 The answer:** no. Only **14.2%** of unfulfilled order lines were reordered within 60 days (68,898 order lines analyzed).
+
+**🔄 How it works, in 3 steps (the "medallion" pattern):**
+
+| Step | Layer | What happens | Tool |
+|---|---|---|---|
+| 1️⃣ | 🥉 **Bronze** | The Excel file is loaded as-is, checked against a column contract and logged | Spark notebook |
+| 2️⃣ | 🥈 **Silver** | Keys are standardized, two POS systems are reconciled, and bad rows go to a quarantine table with the reason | Spark notebook |
+| 3️⃣ | 🥇 **Gold** | A star schema (7 dimensions and 1 fact table) feeds a Direct Lake semantic model with 95 DAX measures | Spark notebook, Power BI |
+
+**✅ What it shows:**
+- A data-quality gate that quarantines rejected rows instead of hiding them
+- A star schema where no fact row can point to a missing dimension
+- A semantic model with 95 documented DAX measures and a four-page Power BI report
+- Honest limits: assumptions and data gaps are written down
+
+**🧰 Environment**
+
+![Microsoft Fabric](https://img.shields.io/badge/Microsoft%20Fabric-117865?style=flat-square&logo=microsoft&logoColor=white)
+![Lakehouse](https://img.shields.io/badge/Lakehouse-0078D4?style=flat-square)
+![Spark](https://img.shields.io/badge/Spark%20Notebooks-E25A1C?style=flat-square&logo=apachespark&logoColor=white)
+![PySpark](https://img.shields.io/badge/PySpark-E25A1C?style=flat-square&logo=apachespark&logoColor=white)
+![Direct Lake](https://img.shields.io/badge/Direct%20Lake-0078D4?style=flat-square)
+![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=flat-square&logo=powerbi&logoColor=black)
+![DAX](https://img.shields.io/badge/DAX-0078D4?style=flat-square)
+![Dataflow Gen2](https://img.shields.io/badge/Dataflow%20Gen2-0078D4?style=flat-square)
+![Git](https://img.shields.io/badge/Git%20integration-F05032?style=flat-square&logo=git&logoColor=white)
+
+**🚀 Jump to:** [Architecture](#architecture) · [Data model](#data-model) · [Semantic model](#semantic-model) · [Key results](#key-results) · [How to run it](#how-to-run-it) · [Assumptions and limits](#assumptions-and-limits)
+
+---
+
+## 🔍 Full technical detail
 
 Restaurant Profile semantic model for **ChowHound, LTD**, built on **Microsoft Fabric**: a medallion pipeline (bronze, silver, gold) in Spark notebooks, a star schema in a Lakehouse, and a Direct Lake semantic model with its DAX measures.
 
