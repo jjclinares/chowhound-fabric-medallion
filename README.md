@@ -17,7 +17,7 @@
 ![Dataflow Gen2](https://img.shields.io/badge/Dataflow%20Gen2-0078D4?style=flat-square)
 ![Git](https://img.shields.io/badge/Git%20integration-F05032?style=flat-square&logo=git&logoColor=white)
 
-**🚀 Jump to:** [Architecture](#architecture) · [Data model](#data-model) · [Semantic model](#semantic-model) · [Key results](#key-results) · [How to run it](#how-to-run-it)
+**🚀 Jump to:** [Architecture](#architecture) · [Data model](#data-model) · [Semantic model](#semantic-model) · [Key results](#key-results) · [Report preview](#report-preview) · [How to run it](#how-to-run-it)
 
 ---
 
@@ -341,6 +341,51 @@ Computed from the source workbook (68,898 order lines after quarantining two row
 | January to March 2023 | The start of the new POS: 81.6% of all order lines in three months, not organic growth |
 | The CEO's statement | Not supported: 14.2% of unfulfilled lines were reordered within 60 days at the same or a higher quantity, and $4.17M of $4.75M lost did not come back |
 | Forecast, April to June 2023 | About $12.88M a month (three-month moving average), with low confidence |
+
+## Report preview
+
+The Power BI report has four pages. The `.pbix` is a thin file that connects live to the semantic model in the Fabric workspace, so it shows data only to people with access to it (see [Downloadable models](#downloadable-models)). These captures show what the report displays.
+
+### Business Description
+
+![Business Description page: restaurant information, operational analytics, and restaurant characteristics and performance drivers](docs/images/dashboard_01_business_description.png)
+
+The landing page profiles the restaurant base in three blocks, with slicers for customer, area, source system, customer rank and restaurant segment:
+
+- **Restaurant Information:** about 6K restaurants ordering, two in decline against the same window last year, and a location table by area.
+- **Operational Analytics:** average sales, orders and units per week, month and year (about $808K, 206 orders and 5.9K units per week), sales by POS system, month-over-month variation and year to date against the same window of 2022.
+- **Restaurant Characteristics & Performance Drivers:** average restaurant age (71.7 days), 636 lost clients (no order in the last 90 days), new restaurants by first-order month, restaurants by segment, age and fulfillment rate against sales, and a ranking by sales.
+
+The page states its own limits: the prior-year window has only 3 restaurants and 19 units, so year-over-year percentages are extreme and reflect the coverage of the new POS, not customer behaviour. Dependence on customs clearance is not estimated because the source has no field for imports.
+
+### Objective I: fulfillment and inventory
+
+![Objective I page: top products, accounts and restaurants with unfulfilled lines due to insufficient inventory, and the annual projection](docs/images/dashboard_02_objective_1.png)
+
+Answers the inventory questions of the case:
+
+- **Q1:** top 10 products by quantity ordered; product `3016012` leads with 63,500 units.
+- **Q2:** accounts and restaurants ranked by unfulfilled lines due to insufficient inventory (1,707 lines and $1.34M by account; 1,692 lines and $1.31M by restaurant).
+- **Q3:** amount lost by the top three accounts ($63.40K) and the top three restaurants ($28.55K).
+- **Q4:** projection if the daily pattern repeats: $607K of unmet demand a year, $1.82M of revenue and $1.22M of profit at risk, under the stated assumptions (3x revenue, 67% profit).
+
+The monthly chart and the closing note show that January to March 2023 holds 81.6% of all order lines (56,207) and belongs to the new POS: it is the start of that system, not organic growth.
+
+### Objective II: the CEO's statement and forecast
+
+![Objective II page: outcome of unfulfilled lines within 60 days, amounts recovered and not recovered, and the three-month forecast](docs/images/dashboard_03_objective_2_forecast.png)
+
+Tests the statement that restaurants whose orders cannot be filled order the same items again within a couple of months, so the money lost is small. Filters by reason for non-fulfillment and by area are available.
+
+- Of about 5K unfulfilled lines with a full 60-day window ($4.75M), only **14.2%** were reordered at the same or a higher quantity and **83.5%** were not ordered again.
+- **$0.57M (12.0%)** came back and **$4.17M** did not, so the data does not support the statement.
+- **Forecast:** a three-month moving average of $12.88M a month ($38.64M for the next three months), with a linear trend as a sensitivity. Because the data are a coverage ramp, the spread between methods is wide and the confidence is low.
+
+### Client VS
+
+![Client VS page: restaurants above and below their area's average](docs/images/dashboard_04_client_vs.png)
+
+Benchmarks each restaurant against its peers in the same area: about 2K restaurants are above the area average and 4K below (31% above), with the split by area and a table of each restaurant's order amount against the area average and its rank in the area. Restaurant `99999` is a shared placeholder and stays in the totals.
 
 ## Assumptions and limits
 
